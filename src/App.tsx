@@ -1,8 +1,12 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import "./App.css";
 import { Todolist } from "./Todolist";
 
-export type FilterValuesType = "all" | "active" | "completed";
+export type FilterValuesType =
+  | "all"
+  | "active"
+  | "completed"
+  | "firstThreeTasks";
 
 //Hi guys!
 //1. Let's create a 'DELETE ALL TASKS' button, and place it above the filter buttons
@@ -39,8 +43,8 @@ function App() {
     setTasks(filteredTasks);
   }
 
-  function removeAllTasks(){
-    setTasks([])
+  function removeAllTasks() {
+    setTasks([]);
   }
 
   let [filter, setFilter] = useState<FilterValuesType>("all");
@@ -52,6 +56,10 @@ function App() {
   }
   if (filter === "completed") {
     tasksForTodolist = tasks.filter((t) => t.isDone === true);
+  }
+
+  if (filter === "firstThreeTasks") {
+    tasksForTodolist = tasks.slice(0, 3);
   }
 
   function changeFilter(value: FilterValuesType) {

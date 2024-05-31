@@ -1,4 +1,3 @@
-import React from "react";
 import { FilterValuesType } from "./App";
 
 type TaskType = {
@@ -69,6 +68,13 @@ export function Todolist(props: PropsType) {
           }}
         >
           Completed
+        </button>
+        <button
+          onClick={() => {
+            props.changeFilter("firstThreeTasks");
+          }}
+        >
+          Show first three tasks
         </button>
       </div>
     </div>
