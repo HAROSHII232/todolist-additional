@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { FilterValuesType } from "./App";
 
 type TaskType = {
@@ -11,10 +12,27 @@ type PropsType = {
   tasks: Array<TaskType>;
   removeTask: (taskId: number) => void;
   removeAllTasks: () => void;
-  changeFilter: (value: FilterValuesType) => void;
 };
 
 export function Todolist(props: PropsType) {
+  let [filter, setFilter] = useState<FilterValuesType>("all");
+
+  let tasksForTodolist = props.tasks;
+
+  if (filter === "firstThreeTasks") {
+    tasksForTodolist = props.tasks.slice(0, 3);
+  }
+  if (filter === "active") {
+    tasksForTodolist = props.tasks.filter((t) => t.isDone === false);
+  }
+  if (filter === "completed") {
+    tasksForTodolist = props.tasks.filter((t) => t.isDone === true);
+  }
+
+  function changeFilter(value: FilterValuesType) {
+    setFilter(value);
+  }
+
   return (
     <div>
       <h3>{props.title}</h3>
@@ -23,7 +41,7 @@ export function Todolist(props: PropsType) {
         <button>+</button>
       </div>
       <ul>
-        {props.tasks.map((t) => (
+        {tasksForTodolist.map((t) => (
           <li key={t.id}>
             <input type="checkbox" checked={t.isDone} />
             <span>{t.title}</span>
@@ -48,32 +66,10 @@ export function Todolist(props: PropsType) {
           </button>
         </div>
 
-        <button
-          onClick={() => {
-            props.changeFilter("all");
-          }}
-        >
-          All
-        </button>
-        <button
-          onClick={() => {
-            props.changeFilter("active");
-          }}
-        >
-          Active
-        </button>
-        <button
-          onClick={() => {
-            props.changeFilter("completed");
-          }}
-        >
-          Completed
-        </button>
-        <button
-          onClick={() => {
-            props.changeFilter("firstThreeTasks");
-          }}
-        >
+        <button onClick={() => changeFilter("all")}>All</button>
+        <button onClick={() => changeFilter("active")}>Active</button>
+        <button onClick={() => changeFilter("completed")}>Completed</button>
+        <button onClick={() => changeFilter("firstThreeTasks")}>
           Show first three tasks
         </button>
       </div>
